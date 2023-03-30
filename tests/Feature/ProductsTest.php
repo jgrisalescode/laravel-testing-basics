@@ -42,4 +42,37 @@ class ProductsTest extends TestCase
             return $collection->contains($product);
         });
     }
+
+    /** @test */
+    public function paginate_product_table_doesnt_contain_11th_record()
+    {
+        for ($i = 1; $i <= 11; $i++){
+            $product = Product::create([
+                'name' => "Product {$i}",
+                'price' => rand(100, 999)
+            ]);
+        }
+
+        $response = $this->get('/products');
+
+        $response->assertStatus(200);
+        $response->assertViewHas('products', function ($collection) use ($product) {
+            return !$collection->contains($product);
+        });
+    }
+
+    /** @test */
+    public function paginate_product_table_doesnt_contain_11th_record_using_factories()
+    {
+        $products = Product::factory(11)->create();
+        $lastProduct = $products->last();
+        // dd($products);
+
+        $response = $this->get('/products');
+
+        $response->assertStatus(200);
+        $response->assertViewHas('products', function ($collection) use ($lastProduct) {
+            return !$collection->contains($lastProduct);
+        });
+    }
 }
