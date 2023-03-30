@@ -11,6 +11,11 @@ class ProductsTest extends TestCase
 {
     use RefreshDatabase;
 
+    // AAA Technic for testing
+    // Arrange
+    // Act
+    // Assert
+
     /** @test */
     public function home_page_contains_empty_table(): void
     {
